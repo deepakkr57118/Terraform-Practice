@@ -3,7 +3,9 @@ module "vpc" {
 }
 
 module "ec2" {
-  source = "./ec2"
-  subnet_id = module.vpc.public_subnet_id
-  security_group = module.vpc.security_group_id
+  source = "./modules/ec2"
+
+  security_group_id = module.vpc.security_group_id  
+  instance_type     = "t2.micro"                    
+  key_name          = "Deep-Kumar"              
 }

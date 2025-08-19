@@ -1,5 +1,5 @@
 resource "aws_instance" "app" {
-  ami = "ami-0c55b159cbfafe1f0"
+  ami = "ami-084a7d336e816906b"
   instance_type = var.instance_type
   subnet_id = var.subnet_id
   key_name = var.key_name
@@ -16,26 +16,27 @@ resource "aws_instance" "app" {
 
     tags = {
     Name = "AppInstance"
-  }
+    }
 
   provisioner "file"  {
-    source = "${path.module}/../../app.py"
+    source = "C:/Users/deepa/onedrive/Desktop/EC2_instance/modules/app.py"
     destination = "/home/ec2-user/app.py"
   }          
   
   provisioner "remote-exec" {
-    inline = [
-      "python3 /home/ec2-user/app.py"
-    ]
+  inline = [
+    "sudo yum install -y python3",
+    "chmod +x /home/ec2-user/app.py",
+    "python3 /home/ec2-user/app.py &"
+  ]
   }
+
 
   connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("~/.ssh/id_rsa")
+      private_key = file("C:/Users/deepa/.ssh/id_rsa")
       host        = self.public_ip
 
   }    
-
 }
-
